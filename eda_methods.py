@@ -2,6 +2,9 @@
 use this as im ported libary
 import eda_methods as eda
 """
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 def meta(df, transpose=True):
     """
