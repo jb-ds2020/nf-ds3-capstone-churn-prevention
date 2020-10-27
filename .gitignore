@@ -1,4 +1,4 @@
 .ipynb_checkpoints
 f_chtr_churn_traintable_nf.csv 
 .DS_Store
-pycache
+__pycache__
