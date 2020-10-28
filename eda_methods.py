@@ -4,6 +4,7 @@ import eda_methods as eda
 """
 import pandas as pd
 import seaborn as sns
+import numpy as np
 from matplotlib import pyplot as plt
 
 def meta(df, transpose=True):
@@ -90,7 +91,7 @@ def correlogram(df):
     ax = sns.heatmap(round(df.corr()*100, 0),
                      annot=True,
                      mask=mask, cmap="coolwarm")
-    return df.corr()
+    return df.corr().round(2)
 
 def plot_train_test_split(y, y_train, y_test):
     """
