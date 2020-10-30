@@ -3,7 +3,6 @@ use this as im ported libary
 import eda_methods as eda
 """
 import pandas as pd
-# KOmmentar
 import seaborn as sns
 import numpy as np
 from matplotlib import pyplot as plt
