@@ -47,9 +47,8 @@ try:
     # plot for output
     import matplotlib.pyplot as plt
 except ImportError:
-    print("One or more modules needs to be installed. Please check README")
+    print("Could not import all models. Please check dependencies")
     pass
-
 
 ######################################
 #TO DO!!!                            #
@@ -57,25 +56,48 @@ except ImportError:
 # input path
 #PATH = str(input("Copy path here")
 
+print('Import Data')
+
+# define all columns which must be included in the csv for the data conversion
+#col_list = []
+
 # load dataset
-df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv')
+try:
+    df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv') #,usecols = col_list)
+except NameError:
+    print(f"Colum names might changed. The following columns must be included: {col_list}")
 
 ######################################
 #TO DO!!!                            #
 ######################################
-# check of dataframe or csv file
+# check of data types and values
 
 # drop not used columns
+auftrag_new_id = df.auftrag_new_id
+
 df = df.drop(["Unnamed: 0", "auftrag_new_id"], axis=1)
 
 # remove major customer with more than 4 subscriptions per household
 df = df[df.cnt_abo < 5]
 
 # removing of NaNs
-print('df before drop',df.shape)
 # does not work drops all non kuendigungseingangsdatum, check over columns with missings
+
+######################################
+#TO DO!!!                            #
+######################################
+# check for data missings
+# 1. if missings remove them
+# 2. define subset based on columns with missing
+#missing_cols = df.columns[df.isnull().any()]
+
+size_0 = df.shape[0]
 df = df.dropna(subset=['ort','email_am_kunden'])
-print('df after drop',df.shape)
+size_1 = df.shape[0]
+
+print(f"{size_0-size_1} customers have been deleted due to missings.")
+
+print('Converting Data')
 
 # datetime conversion
 df['abo_registrierung_min'] = pd.to_datetime(df['abo_registrierung_min'])
@@ -157,8 +179,6 @@ df_zb_1 = df[['received_anzahl_zeitbrief_1w', 'received_anzahl_zeitbrief_1m',
        'clicked_anzahl_zeitbrief_3m', 'clicked_anzahl_zeitbrief_6m',
        'unsubscribed_anzahl_zeitbrief_1w', 'unsubscribed_anzahl_zeitbrief_1m',
        'unsubscribed_anzahl_zeitbrief_3m', 'unsubscribed_anzahl_zeitbrief_6m']]                
-
-
 
 # engineering functions
 def flatten_greater_1(flat):
@@ -287,7 +307,7 @@ print(df.columns)
 scaler = load(open('trained_models/scaler.pckl', 'rb'))
 
 df = df[important_features]
-df = scale.transform(df)
+df = scaler.transform(df)
 
 print('Shape of df',df.shape)
 # load model
@@ -303,10 +323,11 @@ predictions_proba = model.predict_proba(df)[:,1]
 print('Prediction Results (0=No Churn, 1=Churn): ',predictions)
 
 predictions_df = pd.DataFrame()
+predictions_df["auftrag_new_id"] = auftrag_new_id
 predictions_df["prediction"] = predictions
-predictions_df["probability"] = predictions_proba
-# save to csv
+predictions_df["probability"] = predictions_proba.round(3)
 
+# save to csv
 predictions_df.to_csv("predictions.csv")
 
 _ = plt.hist(predictions, bins='auto')  # arguments are passed to np.histogram
