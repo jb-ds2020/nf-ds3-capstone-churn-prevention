@@ -57,8 +57,13 @@ except ImportError:
 # input path
 #PATH = str(input("Copy path here")
 
+# list of feature we need to load
+col_list = []
+# Aboform, plz_1, plz_2, Kanal, Anrede, Objekt_name, zahlung_rhythmus_name, zahlung_weg_name
+
 # load dataset
 df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv')
+# df = pd.read_csv("data/f_chtr_churn_traintable_nf_2.csv", usecols=col_list)
 
 ######################################
 #TO DO!!!                            #
