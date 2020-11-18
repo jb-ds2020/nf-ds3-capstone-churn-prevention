@@ -32,24 +32,23 @@ __status__ = "Production"
 
 
 # imports
-import pandas as pd
-import numpy as np
-import math
-import itertools
-import joblib
-from time import time
-from datetime import datetime
 
-# metrics
-from sklearn.metrics import fbeta_score, accuracy_score, f1_score, recall_score, precision_score
-
-#Pipeline
-
-# pickle
-from pickle import load
-
-# plot for output
-import matplotlib.pyplot as plt
+try:
+    import pandas as pd
+    import numpy as np
+    import math
+    import itertools
+    import joblib
+    from time import time
+    from datetime import datetime
+    # metrics
+    from sklearn.metrics import fbeta_score, accuracy_score, f1_score, recall_score, precision_score
+    from pickle import load
+    # plot for output
+    import matplotlib.pyplot as plt
+except ImportError:
+    print("One or more modules needs to be installed. Please check README")
+    pass
 
 
 ######################################
