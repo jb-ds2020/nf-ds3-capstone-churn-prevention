@@ -92,29 +92,73 @@ df['MONTH_DELTA_nl_min'] = (df.nl_registrierung_min - df.nl_registrierung_min.mi
 df['MONTH_DELTA_nl_min'] = df['MONTH_DELTA_nl_min'].map(lambda x: x/30)
 
 
+# zones are special areas that need registration
+df_zon = df[['zon_che_opt_in', 'zon_sit_opt_in', 'zon_zp_grey', 'zon_premium',
+       'zon_boa', 'zon_kommentar', 'zon_sonstige', 'zon_zp_red', 'zon_rawr',
+       'zon_community', 'zon_app_sonstige', 'zon_schach',
+       'zon_blog_kommentare', 'zon_quiz']]                
 
-# take column names not iloc
-df_zon = df.iloc[::, 21:35]                # zones are special areas that need registration
-print(df_zon.columns)
-df_cnt = df.iloc[::, 35:40]                # cnt is the number of subscribtions the contract holds (families, libaries etc.)
-print(df_cnt.columns)
-df_nl = df.iloc[::, 41:51]
-print(df_nl.columns)                 # newsletter drop technical details
+# cnt is the number of subscribtions the contract holds (families, libaries etc.)
+df_cnt = df[['cnt_abo', 'cnt_abo_diezeit', 'cnt_abo_diezeit_digital',
+       'cnt_abo_magazin', 'cnt_umwandlungsstatus2_dkey']]               
+
+# Newsletter information
+df_nl = df[['nl_zeitbrief', 'nl_zeitshop', 'nl_zeitverlag_hamburg',
+       'nl_fdz_organisch', 'nl_blacklist_sum', 'nl_bounced_sum',
+       'nl_aktivitaet', 'nl_registrierung_min', 'nl_sperrliste_sum',
+       'nl_opt_in_sum']]
+
+# newsletter drop technical details
 df_nl.drop(["nl_blacklist_sum", "nl_bounced_sum", "nl_sperrliste_sum", "nl_opt_in_sum", "nl_fdz_organisch", "nl_registrierung_min"], axis=1, inplace=True)
-df_reg = df.iloc[::, 51:55]
-print(df_reg.columns)                # newsletter interactions
-#df_nl_bestandskunden = df.iloc[::, 77:99]  # newsletter existing customers
-#df_nl_produktnews = df.iloc[::, 99:121]    # productnews (kind of newsletter but more commercial)
-#df_nl_hamburg = df.iloc[::, 121:143]       # newsletter region hamburg
-#df_zb = df.iloc[::, 143:165]               # zb = zeitbrief kind of letter
-df_nl_bestandskunden_1 = df.iloc[::, 77:93]  # newsletter existing customers without rates
-print(df_nl_bestandskunden_1.columns)
-df_nl_produktnews_1 = df.iloc[::, 99:115]    # productnews (kind of newsletter but more commercial)without rates
-print(df_nl_produktnews_1.columns)
-df_nl_hamburg_1 = df.iloc[::, 121:137]       # newsletter region hamburg without rates
-print(df_nl_hamburg_1.columns)
-df_zb_1 = df.iloc[::, 143:159]               # newsletter zeitbrief without rates
-print(df_zb_1.columns)
+# newsletter interactions
+df_reg = df[['boa_reg', 'che_reg', 'sit_reg', 'sso_reg']]
+               
+# newsletter existing customers without rates
+df_nl_bestandskunden_1 = df[['received_anzahl_bestandskunden_1w',
+       'received_anzahl_bestandskunden_1m',
+       'received_anzahl_bestandskunden_3m',
+       'received_anzahl_bestandskunden_6m', 'opened_anzahl_bestandskunden_1w',
+       'opened_anzahl_bestandskunden_1m', 'opened_anzahl_bestandskunden_3m',
+       'openedanzahl_bestandskunden_6m', 'clicked_anzahl_bestandskunden_1w',
+       'clicked_anzahl_bestandskunden_1m', 'clicked_anzahl_bestandskunden_3m',
+       'clicked_anzahl_bestandskunden_6m',
+       'unsubscribed_anzahl_bestandskunden_1w',
+       'unsubscribed_anzahl_bestandskunden_1m',
+       'unsubscribed_anzahl_bestandskunden_3m',
+       'unsubscribed_anzahl_bestandskunden_6m']]
+
+# productnews (kind of newsletter but more commercial)without rates
+df_nl_produktnews_1 = df[['received_anzahl_produktnews_1w', 'received_anzahl_produktnews_1m',
+       'received_anzahl_produktnews_3m', 'received_anzahl_produktnews_6m',
+       'opened_anzahl_produktnews_1w', 'opened_anzahl_produktnews_1m',
+       'opened_anzahl_produktnews_3m', 'openedanzahl_produktnews_6m',
+       'clicked_anzahl_produktnews_1w', 'clicked_anzahl_produktnews_1m',
+       'clicked_anzahl_produktnews_3m', 'clicked_anzahl_produktnews_6m',
+       'unsubscribed_anzahl_produktnews_1w',
+       'unsubscribed_anzahl_produktnews_1m',
+       'unsubscribed_anzahl_produktnews_3m',
+       'unsubscribed_anzahl_produktnews_6m']]   
+
+# newsletter region hamburg without rates
+df_nl_hamburg_1 = df[['received_anzahl_hamburg_1w', 'received_anzahl_hamburg_1m',
+       'received_anzahl_hamburg_3m', 'received_anzahl_hamburg_6m',
+       'opened_anzahl_hamburg_1w', 'opened_anzahl_hamburg_1m',
+       'opened_anzahl_hamburg_3m', 'openedanzahl_hamburg_6m',
+       'clicked_anzahl_hamburg_1w', 'clicked_anzahl_hamburg_1m',
+       'clicked_anzahl_hamburg_3m', 'clicked_anzahl_hamburg_6m',
+       'unsubscribed_anzahl_hamburg_1w', 'unsubscribed_anzahl_hamburg_1m',
+       'unsubscribed_anzahl_hamburg_3m', 'unsubscribed_anzahl_hamburg_6m']] 
+
+# newsletter zeitbrief without rates
+df_zb_1 = df[['received_anzahl_zeitbrief_1w', 'received_anzahl_zeitbrief_1m',
+       'received_anzahl_zeitbrief_3m', 'received_anzahl_zeitbrief_6m',
+       'opened_anzahl_zeitbrief_1w', 'opened_anzahl_zeitbrief_1m',
+       'opened_anzahl_zeitbrief_3m', 'openedanzahl_zeitbrief_6m',
+       'clicked_anzahl_zeitbrief_1w', 'clicked_anzahl_zeitbrief_1m',
+       'clicked_anzahl_zeitbrief_3m', 'clicked_anzahl_zeitbrief_6m',
+       'unsubscribed_anzahl_zeitbrief_1w', 'unsubscribed_anzahl_zeitbrief_1m',
+       'unsubscribed_anzahl_zeitbrief_3m', 'unsubscribed_anzahl_zeitbrief_6m']]                
+
 
 
 # engineering functions
