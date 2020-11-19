@@ -57,15 +57,43 @@ except ImportError:
 #PATH = str(input("Copy path here")
 
 print('Import Data')
+# Features to import
+zon_features = ['zon_che_opt_in', 'zon_sit_opt_in', 'zon_zp_grey', 'zon_premium',
+                'zon_boa', 'zon_kommentar', 'zon_sonstige', 'zon_zp_red', 'zon_rawr',
+                'zon_community', 'zon_app_sonstige', 'zon_schach',
+                'zon_blog_kommentare', 'zon_quiz']
+reg_features = ['boa_reg', 'che_reg', 'sit_reg', 'sso_reg']
+nl_features = ['opened_anzahl_bestandskunden_1m', 'opened_anzahl_produktnews_1m', 
+               'opened_anzahl_hamburg_1m', 'opened_anzahl_zeitbrief_1m', 
+               'unsubscribed_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_produktnews_6m', 
+               'unsubscribed_anzahl_hamburg_6m', 'unsubscribed_anzahl_zeitbrief_6m', 
+               'clicked_anzahl_bestandskunden_3m', 'openedanzahl_bestandskunden_6m', 
+               'received_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_hamburg_1m', 
+               'received_anzahl_6m', 'openedanzahl_6m', 'unsubscribed_anzahl_1m', 
+               'clicked_anzahl_6m', 'unsubscribed_anzahl_6m']
+cat_features= ['kanal', 'objekt_name', 'aboform_name', 'zahlung_rhythmus_name',
+                'zahlung_weg_name', 'plz_1', 'plz_2', 'land_iso_code',
+                'anrede', 'titel']
+num_features= ['rechnungsmonat', 'received_anzahl_6m', 'openedanzahl_6m', 'nl_zeitbrief',
+                'nl_aktivitaet', 'liefer_beginn_evt', 'cnt_umwandlungsstatus2_dkey',
+                'clickrate_3m', 'unsubscribed_anzahl_1m', 'studentenabo',
+                'received_anzahl_bestandskunden_6m', 'openrate_produktnews_3m',
+                'opened_anzahl_bestandskunden_6m', 'nl_zeitshop', 'nl_opt_in_sum',
+                'nl_opened_1m', 'clicked_anzahl_6m', 'unsubscribed_anzahl_hamburg_1m',
+                'unsubscribed_anzahl_6m', 'shop_kauf', 'openrate_zeitbrief_3m',
+                'openrate_produktnews_1m', 'openrate_3m', 'openrate_1m', 'nl_unsubscribed_6m',
+                'nl_fdz_organisch', 'metropole', 'cnt_abo_magazin', 'cnt_abo_diezeit_digital',
+                'cnt_abo', 'clicked_anzahl_bestandskunden_3m']
+time_features= ['abo_registrierung_min', 'nl_registrierung_min', 'liefer_beginn_evt']
 
-# define all columns which must be included in the csv for the data conversion
-col_list = ['opened_anzahl_bestandskunden_1m', 'opened_anzahl_produktnews_1m', 'opened_anzahl_hamburg_1m', 'opened_anzahl_zeitbrief_1m', 'unsubscribed_anzahl_bestandskunden_6m','unsubscribed_anzahl_produktnews_6m', 'unsubscribed_anzahl_hamburg_6m', 'unsubscribed_anzahl_zeitbrief_6m', 'clicked_anzahl_bestandskunden_3m', 'openedanzahl_bestandskunden_6m', 'received_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_hamburg_1m', 'received_anzahl_6m', 'openedanzahl_6m', 'unsubscribed_anzahl_1m', 'clicked_anzahl_6m', 'unsubscribed_anzahl_6m']
+
+features = zon_features + reg_features + cat_features + num_features + time_features + nl_features
 
 # load dataset
 try:
-    df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv') #,usecols = col_list)
+    df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv', usecols=features)
 except NameError:
-    print(f"Colum names might changed. The following columns must be included: {col_list}")
+    print(f"Colum names might changed. The following columns must be included: {features}")
 
 ######################################
 #TO DO!!!                            #
