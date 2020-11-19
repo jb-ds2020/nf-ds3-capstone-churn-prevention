@@ -2,12 +2,24 @@
 
 """Churn predictor can be used to predict churn of subscribers from a given csv. file.
 
-Input:
+Input: It needs 79 features, a few of them are going to be enginnered, most of them are 
+used for prediction. The predictions are done by a stacking classifier (scores on test 
+Recall: 0.772, Precision: 0.611, Accuracy: 0.782, F1: 0.682).
 
-Output:
+
+Output: csv file with probabilities.
 
 Requirements:
 
+    modules:
+    - pandas
+    - numpy
+    - math
+    - pickle
+    - datetime
+    - time
+    - sklearn
+    
     files:
     - trained_models/stacking_CVC.pckl
     - trained_models/scaler.pckl
@@ -15,7 +27,7 @@ Requirements:
 __author__ = "Carlotta Ulm, Jonas Bechthold, Silas Mederer"
 __version__ = "0.1"
 __maintainer__ = "+++"
-__email__ = "bechthold.jonas@gmail.com"
+__email__ = "bechthold.jonas@gmail.com, mederersilas@gmail.com"
 __status__ = "Production"
 """
 
@@ -71,10 +83,10 @@ nl_features = ['opened_anzahl_bestandskunden_1m', 'opened_anzahl_produktnews_1m'
                'received_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_hamburg_1m', 
                'received_anzahl_6m', 'openedanzahl_6m', 'unsubscribed_anzahl_1m', 
                'clicked_anzahl_6m', 'unsubscribed_anzahl_6m']
-cat_features= ['kanal', 'objekt_name', 'aboform_name', 'zahlung_rhythmus_name',
+cat_features = ['kanal', 'objekt_name', 'aboform_name', 'zahlung_rhythmus_name',
                 'zahlung_weg_name', 'plz_1', 'plz_2', 'land_iso_code',
                 'anrede', 'titel']
-num_features= ['rechnungsmonat', 'received_anzahl_6m', 'openedanzahl_6m', 'nl_zeitbrief',
+num_features = ['rechnungsmonat', 'received_anzahl_6m', 'openedanzahl_6m', 'nl_zeitbrief',
                 'nl_aktivitaet', 'liefer_beginn_evt', 'cnt_umwandlungsstatus2_dkey',
                 'clickrate_3m', 'unsubscribed_anzahl_1m', 'studentenabo',
                 'received_anzahl_bestandskunden_6m', 'openrate_produktnews_3m',
@@ -84,10 +96,11 @@ num_features= ['rechnungsmonat', 'received_anzahl_6m', 'openedanzahl_6m', 'nl_ze
                 'openrate_produktnews_1m', 'openrate_3m', 'openrate_1m', 'nl_unsubscribed_6m',
                 'nl_fdz_organisch', 'metropole', 'cnt_abo_magazin', 'cnt_abo_diezeit_digital',
                 'cnt_abo', 'clicked_anzahl_bestandskunden_3m']
-time_features= ['abo_registrierung_min', 'nl_registrierung_min', 'liefer_beginn_evt']
+time_features = ['abo_registrierung_min', 'nl_registrierung_min', 'liefer_beginn_evt']
+id_marker = ['auftrag_new_id']
 
 
-features = zon_features + reg_features + cat_features + num_features + time_features + nl_features
+features = id_marker + zon_features + reg_features + cat_features + num_features + time_features + nl_features
 
 # load dataset
 try:
@@ -103,13 +116,8 @@ except NameError:
 # drop not used columns
 auftrag_new_id = df.auftrag_new_id
 
-df = df.drop(["Unnamed: 0", "auftrag_new_id"], axis=1)
-
 # remove major customer with more than 4 subscriptions per household
 df = df[df.cnt_abo < 5]
-
-# removing of NaNs
-# does not work drops all non kuendigungseingangsdatum, check over columns with missings
 
 ######################################
 #TO DO!!!                            #
@@ -145,11 +153,7 @@ df['MONTH_DELTA_nl_min'] = df['MONTH_DELTA_nl_min'].map(lambda x: x/30)
 df_zon = df[['zon_che_opt_in', 'zon_sit_opt_in', 'zon_zp_grey', 'zon_premium',
        'zon_boa', 'zon_kommentar', 'zon_sonstige', 'zon_zp_red', 'zon_rawr',
        'zon_community', 'zon_app_sonstige', 'zon_schach',
-       'zon_blog_kommentare', 'zon_quiz']]                
-
-# cnt is the number of subscribtions the contract holds (families, libaries etc.)
-df_cnt = df[['cnt_abo', 'cnt_abo_diezeit', 'cnt_abo_diezeit_digital',
-       'cnt_abo_magazin', 'cnt_umwandlungsstatus2_dkey']]               
+       'zon_blog_kommentare', 'zon_quiz']]                            
 
 # Newsletter information
 df_nl = df[['nl_zeitbrief', 'nl_zeitshop', 'nl_zeitverlag_hamburg',
@@ -272,7 +276,6 @@ important_features =['zahlung_weg_name_Rechnung',
                      'MONTH_DELTA_abo_min']
 
 # dataframe ready for prediction
-
 print(df.columns)
 
 # Min Max Scaler on the initial training set
@@ -282,6 +285,7 @@ df = df[important_features]
 df = scaler.transform(df)
 
 print('Shape of df',df.shape)
+
 # load model
 # votingcf = joblib.load("/trained_models/votingcf.joblib")
 #stackingcf = joblib.load("trained_models/stacking_CVC.joblib")
@@ -302,6 +306,13 @@ predictions_df["probability"] = predictions_proba.round(3)
 # save to csv
 predictions_df.to_csv("predictions.csv")
 
-_ = plt.hist(predictions, bins='auto')  # arguments are passed to np.histogram
-plt.title("Prediction Results")
-plt.show()
+try: 
+    import matplotlib.pyplot as plt
+
+    _ = plt.hist(predictions, bins='auto')  # arguments are passed to np.histogram
+    plt.title("Prediction Results")
+    plt.show()
+    
+except ImportError:
+    print("Plot can not be showed. Missing matplotlib.")
+    pass
