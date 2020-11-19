@@ -59,7 +59,7 @@ except ImportError:
 print('Import Data')
 
 # define all columns which must be included in the csv for the data conversion
-#col_list = []
+col_list = ['opened_anzahl_bestandskunden_1m', 'opened_anzahl_produktnews_1m', 'opened_anzahl_hamburg_1m', 'opened_anzahl_zeitbrief_1m', 'unsubscribed_anzahl_bestandskunden_6m','unsubscribed_anzahl_produktnews_6m', 'unsubscribed_anzahl_hamburg_6m', 'unsubscribed_anzahl_zeitbrief_6m', 'clicked_anzahl_bestandskunden_3m', 'openedanzahl_bestandskunden_6m', 'received_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_hamburg_1m', 'received_anzahl_6m', 'openedanzahl_6m', 'unsubscribed_anzahl_1m', 'clicked_anzahl_6m', 'unsubscribed_anzahl_6m']
 
 # load dataset
 try:
@@ -129,56 +129,19 @@ df_nl = df[['nl_zeitbrief', 'nl_zeitshop', 'nl_zeitverlag_hamburg',
        'nl_aktivitaet', 'nl_registrierung_min', 'nl_sperrliste_sum',
        'nl_opt_in_sum']]
 
-# newsletter drop technical details
-df_nl.drop(["nl_blacklist_sum", "nl_bounced_sum", "nl_sperrliste_sum", "nl_opt_in_sum", "nl_fdz_organisch", "nl_registrierung_min"], axis=1, inplace=True)
 # newsletter interactions
 df_reg = df[['boa_reg', 'che_reg', 'sit_reg', 'sso_reg']]
                
-# newsletter existing customers without rates
-df_nl_bestandskunden_1 = df[['received_anzahl_bestandskunden_1w',
-       'received_anzahl_bestandskunden_1m',
-       'received_anzahl_bestandskunden_3m',
-       'received_anzahl_bestandskunden_6m', 'opened_anzahl_bestandskunden_1w',
-       'opened_anzahl_bestandskunden_1m', 'opened_anzahl_bestandskunden_3m',
-       'openedanzahl_bestandskunden_6m', 'clicked_anzahl_bestandskunden_1w',
-       'clicked_anzahl_bestandskunden_1m', 'clicked_anzahl_bestandskunden_3m',
-       'clicked_anzahl_bestandskunden_6m',
-       'unsubscribed_anzahl_bestandskunden_1w',
-       'unsubscribed_anzahl_bestandskunden_1m',
-       'unsubscribed_anzahl_bestandskunden_3m',
-       'unsubscribed_anzahl_bestandskunden_6m']]
+# newsletter opened 1m
+nl_opened = ['opened_anzahl_bestandskunden_1m', 'opened_anzahl_produktnews_1m', 'opened_anzahl_hamburg_1m', 'opened_anzahl_zeitbrief_1m']
 
-# productnews (kind of newsletter but more commercial)without rates
-df_nl_produktnews_1 = df[['received_anzahl_produktnews_1w', 'received_anzahl_produktnews_1m',
-       'received_anzahl_produktnews_3m', 'received_anzahl_produktnews_6m',
-       'opened_anzahl_produktnews_1w', 'opened_anzahl_produktnews_1m',
-       'opened_anzahl_produktnews_3m', 'openedanzahl_produktnews_6m',
-       'clicked_anzahl_produktnews_1w', 'clicked_anzahl_produktnews_1m',
-       'clicked_anzahl_produktnews_3m', 'clicked_anzahl_produktnews_6m',
-       'unsubscribed_anzahl_produktnews_1w',
-       'unsubscribed_anzahl_produktnews_1m',
-       'unsubscribed_anzahl_produktnews_3m',
-       'unsubscribed_anzahl_produktnews_6m']]   
+# newsletter unsubscribed 6m
+nl_unsubscribed = ['unsubscribed_anzahl_bestandskunden_6m','unsubscribed_anzahl_produktnews_6m',  'unsubscribed_anzahl_hamburg_6m',  
+ 'unsubscribed_anzahl_zeitbrief_6m']
 
-# newsletter region hamburg without rates
-df_nl_hamburg_1 = df[['received_anzahl_hamburg_1w', 'received_anzahl_hamburg_1m',
-       'received_anzahl_hamburg_3m', 'received_anzahl_hamburg_6m',
-       'opened_anzahl_hamburg_1w', 'opened_anzahl_hamburg_1m',
-       'opened_anzahl_hamburg_3m', 'openedanzahl_hamburg_6m',
-       'clicked_anzahl_hamburg_1w', 'clicked_anzahl_hamburg_1m',
-       'clicked_anzahl_hamburg_3m', 'clicked_anzahl_hamburg_6m',
-       'unsubscribed_anzahl_hamburg_1w', 'unsubscribed_anzahl_hamburg_1m',
-       'unsubscribed_anzahl_hamburg_3m', 'unsubscribed_anzahl_hamburg_6m']] 
-
-# newsletter zeitbrief without rates
-df_zb_1 = df[['received_anzahl_zeitbrief_1w', 'received_anzahl_zeitbrief_1m',
-       'received_anzahl_zeitbrief_3m', 'received_anzahl_zeitbrief_6m',
-       'opened_anzahl_zeitbrief_1w', 'opened_anzahl_zeitbrief_1m',
-       'opened_anzahl_zeitbrief_3m', 'openedanzahl_zeitbrief_6m',
-       'clicked_anzahl_zeitbrief_1w', 'clicked_anzahl_zeitbrief_1m',
-       'clicked_anzahl_zeitbrief_3m', 'clicked_anzahl_zeitbrief_6m',
-       'unsubscribed_anzahl_zeitbrief_1w', 'unsubscribed_anzahl_zeitbrief_1m',
-       'unsubscribed_anzahl_zeitbrief_3m', 'unsubscribed_anzahl_zeitbrief_6m']]                
+# Other newsletter features
+nl_to_flat = ['clicked_anzahl_bestandskunden_3m', 'openedanzahl_bestandskunden_6m', 'received_anzahl_bestandskunden_6m', 'unsubscribed_anzahl_hamburg_1m']
+           
 
 # engineering functions
 def flatten_greater_1(flat):
@@ -206,39 +169,20 @@ sum_reg = sum_reg.to_frame(name="sum_reg")
 df = df.join(sum_reg)
 
 # newletter engineering flatting
-for i in df_nl_bestandskunden_1:
+for i in df_opened:
+    df[i] = df[i].apply(flatten_greater_0)
+for i in df_unsubscribed:
+    df[i] = df[i].apply(flatten_greater_0)
+for i in df_to_flat:
     df[i] = df[i].apply(flatten_greater_0)
 
-for i in df_nl_produktnews_1:
-    df[i] = df[i].apply(flatten_greater_0)
+# rename columns
+df.rename(columns={'openedanzahl_bestandskunden_6m': 'opened_anzahl_bestandskunden_6m'}, inplace=True)
 
-for i in df_nl_hamburg_1:
-    df[i] = df[i].apply(flatten_greater_0)
+# Create new columns
+df['nl_unsubscribed_6m'] = df['unsubscribed_anzahl_bestandskunden_6m'] + df['unsubscribed_anzahl_produktnews_6m'] + df['unsubscribed_anzahl_hamburg_6m'] + df['unsubscribed_anzahl_zeitbrief_6m']
 
-for i in df_zb_1:
-    df[i] = df[i].apply(flatten_greater_0)
-
-# rename
-df.rename(columns={'openedanzahl_bestandskunden_6m': 'opened_anzahl_bestandskunden_6m',
-                   'openedanzahl_produktnews_6m': 'opened_anzahl_produktnews_6m',
-                   'openedanzahl_hamburg_6m': 'opened_anzahl_hamburg_6m',
-                   'openedanzahl_zeitbrief_6m': 'opened_anzahl_zeitbrief_6m'}, inplace=True)
-
-name = ['received_anzahl', 'opened_anzahl', 'clicked_anzahl', 'unsubscribed_anzahl']
-art = ['bestandskunden','produktnews','hamburg','zeitbrief']
-zeitraum = ['1w', '1m', '3m', '6m']
-titel = ['nl_received_1w', 'nl_received_1m', 'nl_received_3m', 'nl_received_6m', 'nl_opened_1w', 'nl_opened_1m', 'nl_opened_3m',
-        'nl_opened_6m','nl_clicked_1w', 'nl_clicked_1m', 'nl_clicked_3m', 'nl_clicked_6m', 'nl_unsubscribed_1w', 'nl_unsubscribed_1m',
-        'nl_unsubscribed_3m', 'nl_unsubscribed_6m']
-links = []
-for n in name:
-    for z in zeitraum:
-        for a in art:
-            links.append(n + '_' + a + '_' + z)
-
-for t in titel:
-    df[t] = df[links[0]] + df[links[1]] + df[links[2]] + df[links[3]]
-    links = links[3:]
+df['nl_opened_1m'] = df['opened_anzahl_bestandskunden_1m'] + df['opened_anzahl_produktnews_1m'] + df['opened_anzahl_hamburg_1m'] + df['opened_anzahl_zeitbrief_1m']
 
 
 # get get_dummies
