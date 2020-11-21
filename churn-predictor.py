@@ -14,7 +14,6 @@ Requirements:
     modules:
     - pandas
     - numpy
-    - math
     - pickle
     - datetime
     - time
@@ -44,13 +43,10 @@ __status__ = "Production"
 
 
 # imports
-
 try:
     import pandas as pd
     import numpy as np
-    import math
     import itertools
-    import joblib
     from time import time
     from datetime import datetime
     # metrics
@@ -90,15 +86,13 @@ num_features = ['rechnungsmonat', 'received_anzahl_6m', 'openedanzahl_6m', 'nl_z
                 'nl_aktivitaet', 'liefer_beginn_evt', 'cnt_umwandlungsstatus2_dkey',
                 'clickrate_3m', 'unsubscribed_anzahl_1m', 'studentenabo',
                 'received_anzahl_bestandskunden_6m', 'openrate_produktnews_3m',
-                'opened_anzahl_bestandskunden_6m', 'nl_zeitshop', 'nl_opt_in_sum',
-                'nl_opened_1m', 'clicked_anzahl_6m', 'unsubscribed_anzahl_hamburg_1m',
-                'unsubscribed_anzahl_6m', 'shop_kauf', 'openrate_zeitbrief_3m',
-                'openrate_produktnews_1m', 'openrate_3m', 'openrate_1m', 'nl_unsubscribed_6m',
+                'nl_zeitshop', 'nl_opt_in_sum', 'clicked_anzahl_6m', 
+                'unsubscribed_anzahl_hamburg_1m', 'unsubscribed_anzahl_6m', 'shop_kauf', 
+                'openrate_zeitbrief_3m', 'openrate_produktnews_1m', 'openrate_3m', 'openrate_1m', 
                 'nl_fdz_organisch', 'metropole', 'cnt_abo_magazin', 'cnt_abo_diezeit_digital',
                 'cnt_abo', 'clicked_anzahl_bestandskunden_3m']
 time_features = ['abo_registrierung_min', 'nl_registrierung_min', 'liefer_beginn_evt']
 id_marker = ['auftrag_new_id']
-
 
 features = id_marker + zon_features + reg_features + cat_features + num_features + time_features + nl_features
 
@@ -106,7 +100,7 @@ features = id_marker + zon_features + reg_features + cat_features + num_features
 try:
     df = pd.read_csv('data/f_chtr_churn_traintable_nf_2.csv', usecols=features)
 except NameError:
-    print(f"Colum names might changed. The following columns must be included: {features}")
+    print(f"Column names might changed. The following columns must be included: {features}")
 
 ######################################
 #TO DO!!!                            #
