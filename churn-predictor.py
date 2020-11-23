@@ -88,7 +88,7 @@ features = id_marker + zon_features + reg_features + cat_features + num_features
 
 # import data
 print('Import Data')
-filename = input("Ihre Eingabe? ")
+filename = input("Please type the filename?")
 PATH = os.path.abspath("scribt.ipynb").replace("scribt.ipynb", "")
 print(f"Path: {PATH}")
 print(f"Filename: {filename}")
@@ -97,6 +97,8 @@ print(f"Filename: {filename}")
 try:
     df = pd.read_csv(PATH + filename, usecols=features)
 except NameError:
+    print(f"First check filename. Is it: {filename}?")
+    print(f"Second check the filepath. Is it: {PATH}?")
     print(f"Column names might changed. The following columns must be included: {features}")
 
 ######################################
@@ -291,5 +293,5 @@ try:
     plt.show()
 
 except ImportError:
-    print("Plot can not be showed. Missing matplotlib or numpy.")
+    print("Plot can not be showed. Missing matplotlib.")
     pass
