@@ -1,9 +1,9 @@
 # Zeitverlag churn predictor
-__author__ = "Carlotta von Ulm-Erbach, Jonas Bechthold, Silas Mederer"
-__version__ = "0.1"
-__maintainer__ = "+++"
-__email__ = "bechthold.jonas@gmail.com, mederersilas@gmail.com"
-__status__ = "Production"
+
+author = "Carlotta von Ulm-Erbach, Jonas Bechthold, Silas Mederer"
+version = "0.1"
+maintainer = "+++"
+status = "Production"
 
 
 ### How to use:
@@ -19,8 +19,11 @@ __status__ = "Production"
 
 If you have any problems or further questions contact us.
 
+![picture by: Lending Club 2020](script-screenshot.png)
+
+
 ### Churn predictor can be used to predict churn of subscribers from a given csv. file.
-**Input:** It needs 79 features, a few of them are going to be enginnered, most of them are used for prediction. The predictions are done by a stacking classifier (scores on test Recall: 0.772, Precision: 0.611, Accuracy: 0.782, F1: 0.682).
+**Input:** It needs 79 features, a few of them are going to be engineered, most of them are used for prediction. The predictions are done by a stacking classifier (scores on test Recall: 0.772, Precision: 0.611, Accuracy: 0.782, F1: 0.682).
 **Output:** csv file with probabilities.
 **Requirements:**
 

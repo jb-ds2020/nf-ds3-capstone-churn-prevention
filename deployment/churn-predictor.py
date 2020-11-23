@@ -103,14 +103,6 @@ except NameError:
     print(f"Second check the filepath. Is it: {PATH}?")
     print(f"Column names might changed. The following columns must be included: {features}")
 
-######################################
-#TO DO!!!                            #
-######################################
-# check of data types and values
-
-# create auftrag_new_id df
-auftrag_new_id = df.auftrag_new_id
-
 # remove major customer
 df = df[df.cnt_abo < 5]
 
@@ -119,6 +111,9 @@ size_0 = df.shape[0]
 df = df.dropna()
 size_1 = df.shape[0]
 print(f"{size_0-size_1} customers have been deleted due to missings.")
+
+# create auftrag_new_id df
+auftrag_new_id = df.auftrag_new_id
 
 print('Converting Data')
 
@@ -277,7 +272,7 @@ print('Prediction Results (0=No Churn, 1=Churn): ',predictions)
 predictions_df = pd.DataFrame()
 predictions_df["auftrag_new_id"] = auftrag_new_id
 predictions_df["prediction"] = predictions
-predictions_df["probability"] = predictions_proba .round(3)
+predictions_df["probability"] = predictions_proba.round(3)
 
 # save to csv
 if classifier == 1:
@@ -288,9 +283,11 @@ predictions_df.to_csv(f"predictions-{classifier}.csv")
 
 try:
     import matplotlib.pyplot as plt
-    _ = plt.hist(predictions, bins='auto')  # arguments are passed to np.histogram
+    _ = plt.hist(predictions_proba, bins='auto')  # arguments are passed to np.histogram
     plt.title("Prediction Results")
+    plt.savefig(f"prediction-proba-plot-{classifier}.png", dpi=300, bbox_inches='tight')
     plt.show()
+    plt.close()
 
 except ImportError:
     print("Plot can not be showed. Missing matplotlib.")
