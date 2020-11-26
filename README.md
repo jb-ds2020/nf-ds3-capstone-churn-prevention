@@ -4,6 +4,16 @@
 
 **Business Case:** Churn prevention is your proactive strategy for keeping customers around. It involves looking at the underlying reasons for churn and then formulating a plan to combat issues that may lead to churn before they happen.
 
+**Repository content:**
+- [EDA Notebook](/Capstone_Zeit_EDA.ipynb)
+- [ML Notebook](/ML-Capstone_Zeit.ipynb)
+- [ANN Notebook](/ANN-Capstone_Zeit.ipynb)
+- [Model Tuning:](/ml-modelle) KNN, Logistic Regression, Random Forest I, Random Forest II, SVC, XGBoost
+- [Error analysis](/customer_segmentation/ML-error_analysis.ipynb)
+- [Customer segmentation](/customer_segmentation/Customer_segmentation_Selection_ML.ipynb)
+- [Deployment](/deployment)
+- [Presentation](/Capstone_Zeit_Presentation.pdf)
+  
 **Goal:** Improve the model of ‘Die ZEITVerlag’ to do better predictions.
 
 **Metric:** 
@@ -29,15 +39,3 @@ We built ANN and DNN and implemented the “deep and wide” approach. We were a
 Overall we were able to relatively improve the referenced model by 14% in recall and 25% in precision and would recommend to use a soft voting classifier (option 2 in the script) for predictions. This one provides a recall of 79%, precision of 59% and an accuracy of 77%. But as you can see we still miss about 23% of the dataset respectively predict them wrong. 
 
 ![Picture Scores](/plots/Probability_Distribution_Voting_Classifiert_soft_alone.png)
-
-**Repository content:**
-- [EDA Notebook](/Capstone_Zeit_EDA.ipynb)
-- [ML Notebook](/ML-Capstone_Zeit.ipynb)
-- [ANN Notebook](/ANN-Capstone_Zeit.ipynb)
-- [Model Tuning:](/ml-modelle) KNN, Logistic Regression, Random Forest I, Random Forest II, SVC, XGBoost
-- [Error analysis](/customer_segmentation/ML-error_analysis.ipynb)
-- [Customer segmentation](/customer_segmentation/Customer_segmentation_Selection_ML.ipynb)
-- [Deployment](/deployment)
-- [Presentation](/Capstone_Zeit_Presentation.pdf)
-  
-
