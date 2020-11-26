@@ -20,7 +20,7 @@ We used different machine learning (supervised and unsupervised) approaches to p
 
 We built ANN and DNN and implemented the “deep and wide” approach. We were able to improve our baseline ANN but not able to score higher in recall on “churn”. So at the end of this project we decided to implement the stacking and voting classifiers, wrote a script and readme, to hand it over for die ZEITVerlag, so that their operators could use our trained models.
 
-[Picture Deployment](deployment/script-screenshot.png)
+![Picture Deployment](deployment/script-screenshot.png)
 
 **Methods and Technologies:** Preprocessing (Cleaning, EDA), supervised ML classification (Logistic Regression, KNN, RF, XGBoost, Stacking, Voting), advanced methods consisting of ANN (DNN, deep and wide Network)
 
@@ -28,7 +28,7 @@ We built ANN and DNN and implemented the “deep and wide” approach. We were a
 
 Overall we were able to relatively improve the referenced model by 14% in recall and 25% in precision and would recommend to use a soft voting classifier (option 2 in the script) for predictions. This one provides a recall of 79%, precision of 59% and an accuracy of 77%. But as you can see we still miss about 23% of the dataset respectively predict them wrong. 
 
-[Picture Scores](/plots/Probability_Distribution_Voting_Classifiert_soft_alone.png)
+![Picture Scores](/plots/Probability_Distribution_Voting_Classifiert_soft_alone.png)
 
 **Repository content:**
 - [EDA Notebook](/Capstone_Zeit_EDA.ipynb)
